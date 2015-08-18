@@ -1,0 +1,25 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title">
+            <p>
+                新闻列表
+            </p>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div id="news">
+            
+        </div>
+        <script>
+            $("#news").html(loadingimg);
+            appNews.getList(newsRet);
+            var newsTitleArr = [];
+            function newsRet(res) {
+                $(res).each(function(i, n) {
+                    newsTitleArr.push('<p>' + n.Name + '</p>');
+                });
+                $("#news").html(newsTitleArr.join(' '));
+            }
+        </script>
+    </div>
+</div>

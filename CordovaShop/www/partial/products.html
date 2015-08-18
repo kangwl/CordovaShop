@@ -1,0 +1,27 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title">
+            <p>
+                产品列表
+                <a href="./index.html#product/add" class="btn btn-sm btn-info pull-right">添加</a>
+            </p>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div id="products">
+            
+        </div>
+        <script>
+            $("#products").html(loadingimg);
+            appProducts.getList(newsRet);
+            var productsNameArr = [];
+            function newsRet(res) {
+                $(res).each(function (i, n) {
+                    productsNameArr.push('<p>' + n.Name + ' &nbsp;<a href="./index.html?id=' + n.ID + '#product/edit" class="btn btn-xs btn-success pull-right">修改</a>' +
+                        ' &nbsp;<a href="./index.html?id=' + n.ID + '#product/delete" class="btn btn-xs btn-danger pull-right" style="margin-right:10px">删除</a></p>');
+                });
+                $("#products").html(productsNameArr.join(' '));
+            }
+        </script>
+    </div>
+</div>
