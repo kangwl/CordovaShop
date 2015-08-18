@@ -1,0 +1,66 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title">
+            <p>
+                删除产品
+                <a href="./index.html#products" class="btn btn-info btn-sm pull-right">返回</a>    
+            </p>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <tr>
+                <td class="text-right">产品名</td>
+                <td><input type="text" id="txt_productName" class="form-control"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btn_Delete" class="btn btn-danger btn-block" style="display: none">删除产品</button>
+                    <p id="tip" class="form-group" style="margin-top: 20px"></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    var id = location.search.substr(4);
+
+    $.ajax({
+        type: "get",
+        url: "http://localhost:51230/api/product/" + id,
+        success:function(res) {
+            $("#txt_productName").val(res.Name);
+            $("#btn_Delete").show();
+        },
+        error:function() {
+            $.bsAlertError("get error", "#tip", 4);
+        }
+    });
+
+    
+    $(document).on("click", "#btn_Delete", function () {
+        var name = $.trim($("#txt_productName").val());
+        if (name === "") {
+            $.bsAlertWarn("请输入商品名", "#tip", 3);
+            return false;
+        }
+
+        $.ajax({
+            type: "delete",
+            url: "http://localhost:51230/api/product/"+id,
+            data: { ID: id, Name: name },
+            success: function (success) {
+                if (success) {
+                    $.bsAlertSuccess("删除成功", "#tip", 2);
+                } else {
+                    $.bsAlertError("删除失败", "#tip", 3);
+                }
+            },
+            error: function (e) {
+                $.bsAlertError("error", "#tip", 4);
+                console.error(e);
+            }
+        });
+    })
+</script>

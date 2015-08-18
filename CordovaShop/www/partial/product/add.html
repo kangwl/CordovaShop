@@ -1,0 +1,50 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="panel-title">
+            <p>
+                添加产品
+                <a href="./index.html#products" class="btn btn-info btn-sm pull-right">返回</a>    
+            </p>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <tr>
+                <td class="text-right">产品名</td>
+                <td><input type="text" id="txt_productName" class="form-control"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btn_Add" class="btn btn-primary btn-block">添加产品</button>
+                    <p id="tip" class="form-group" style="margin-top: 20px"></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).on("click","#btn_Add",function() {
+        var name = $.trim($("#txt_productName").val());
+        if (name === "") {
+            $.bsAlertWarn("请输入商品名", "#tip", 3);
+            return false;
+        }
+        $.ajax({
+            type: "post",
+            url: "http://localhost:51230/api/product",
+            data: { Name: name },
+            success: function(success) {
+                if (success) {
+                    $.bsAlertSuccess("添加成功", "#tip", 2);
+                } else {
+                    $.bsAlertError("添加失败", "#tip", 3);
+                }
+            },
+            error: function(e) {
+                $.bsAlertError("error","#tip",4);
+                console.error(e);
+            }
+        });
+    })
+</script>
