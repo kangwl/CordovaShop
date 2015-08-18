@@ -8,14 +8,16 @@
         </div>
     </div>
     <div class="panel-body">
-        <table class="table">
+        <div id="loadingtip" class="text-center">
+            
+        </div>
+        <table class="table" id="editTable" style="display: none">
             <tr>
                 <td class="text-right">产品名</td>
                 <td><input type="text" id="txt_productName" class="form-control"/></td>
             </tr>
             <tr>
-                <td></td>
-                <td>
+                <td colspan="2">
                     <button id="btn_Edit" class="btn btn-primary btn-block" style="display: none">修改产品</button>
                     <p id="tip" class="form-group" style="margin-top: 20px"></p>
                 </td>
@@ -27,13 +29,20 @@
     var id = location.search.substr(4);
     $.ajax({
         type: "get",
-        url: "http://localhost:51230/api/product/" + id,
+        beforeSend:function() {
+            $("#loadingtip").html(loadingimg);
+        },
+        url: reqBase+"product/" + id,
         success: function (res) {
             $("#txt_productName").val(res.Name);
             $("#btn_Edit").show();
         },
         error: function () {
             $.bsAlertError("get error", "#tip", 4);
+        },
+        complete:function() {
+            $("#loadingtip").find("img").remove();
+            $("#editTable").show();
         }
     });
     $(document).on("click", "#btn_Edit", function () {
@@ -45,7 +54,7 @@
      
         $.ajax({
             type: "put",
-            url: "http://localhost:51230/api/product",
+            url: reqBase+"product",
             data: {ID:id, Name: name },
             success: function (success) {
                 if (success) {

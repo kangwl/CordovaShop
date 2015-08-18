@@ -32,7 +32,7 @@
         }
         $.ajax({
             type: "post",
-            url: "http://localhost:51230/api/product",
+            url: reqBase+"product",
             data: { Name: name },
             success: function(success) {
                 if (success) {

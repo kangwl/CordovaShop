@@ -9,17 +9,42 @@
     </div>
     <div class="panel-body">
         <div id="products">
-            
+            <div id="loadingtip" class="text-center">
+                
+            </div>
         </div>
         <script>
-            $("#products").html(loadingimg);
+            /*products start*/
+            var appProducts = {
+                ctr: "Product",
+                page: { index: 0, size: 10 },
+                getList: function (successfunc) {
+                    $.ajax({
+                        type: "get",
+                        url: reqBase + appProducts.ctr,
+                        data: { pagesize: appProducts.page.size, pageindex: appProducts.page.index },
+                        dataType: "json",
+                        success: successfunc,
+                        error: function (e) {
+                            console.error(e);
+                            $.bsAlertWarn("系统出错", "#tip", 4);
+                        }
+                    });
+                }
+            }
+            /*products end*/
+        </script>
+        <script>
+            $("#loadingtip").html(loadingimg);
             appProducts.getList(newsRet);
             var productsNameArr = [];
+
             function newsRet(res) {
-                $(res).each(function (i, n) {
+                $(res).each(function(i, n) {
                     productsNameArr.push('<p>' + n.Name + ' &nbsp;<a href="./index.html?id=' + n.ID + '#product/edit" class="btn btn-xs btn-success pull-right">修改</a>' +
                         ' &nbsp;<a href="./index.html?id=' + n.ID + '#product/delete" class="btn btn-xs btn-danger pull-right" style="margin-right:10px">删除</a></p>');
                 });
+                $("#loadingtip").html("");
                 $("#products").html(productsNameArr.join(' '));
             }
         </script>

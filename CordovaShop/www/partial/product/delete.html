@@ -11,11 +11,10 @@
         <table class="table">
             <tr>
                 <td class="text-right">产品名</td>
-                <td><input type="text" id="txt_productName" class="form-control"/></td>
+                <td><label id="lbl_productName"></label></td>
             </tr>
             <tr>
-                <td></td>
-                <td>
+                <td colspan="2">
                     <button id="btn_Delete" class="btn btn-danger btn-block" style="display: none">删除产品</button>
                     <p id="tip" class="form-group" style="margin-top: 20px"></p>
                 </td>
@@ -28,9 +27,9 @@
 
     $.ajax({
         type: "get",
-        url: "http://localhost:51230/api/product/" + id,
+        url: reqBase+"product/" + id,
         success:function(res) {
-            $("#txt_productName").val(res.Name);
+            $("#lbl_productName").text(res.Name);
             $("#btn_Delete").show();
         },
         error:function() {
@@ -38,18 +37,11 @@
         }
     });
 
-    
     $(document).on("click", "#btn_Delete", function () {
-        var name = $.trim($("#txt_productName").val());
-        if (name === "") {
-            $.bsAlertWarn("请输入商品名", "#tip", 3);
-            return false;
-        }
-
+ 
         $.ajax({
             type: "delete",
-            url: "http://localhost:51230/api/product/"+id,
-            data: { ID: id, Name: name },
+            url: reqBase+"product/"+id,
             success: function (success) {
                 if (success) {
                     $.bsAlertSuccess("删除成功", "#tip", 2);
